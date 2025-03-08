@@ -1,0 +1,30 @@
+{% load static %}
+
+<div id="id_navbar_aside">
+    <div id="id_navbar_section">
+        <div id="id_navbar_header">
+            <p>UNIVERSE</p>
+        </div>
+        <p class="p-welcome"><b>Bienvenido, {{ user.username }}</b></p>
+        <div id="id_navbar">
+            <a href="{% url "home" %}">
+                <img src="{% static 'images/home.png' %}" alt="">
+                Inicio
+            </a>
+            <a href="{% url 'profile' user.profile.pk %}">
+                <img src="{% static 'images/profile.png' %}" alt="">
+                Perfil
+            </a>
+            <a href="{% url "logout" %}">
+                <img src="{% static 'images/logout.png' %}" alt="">
+                Cerrar sesión
+            </a>
+        </div>
+        <div id="id_navbar_footer">
+            <p>Universe</p>
+            <p>© Todos los derechos reservados</p>
+        </div>
+        
+        <button id="id_btn_close_menu" style="display: none;">Cerrar menú</button>
+    </div>
+</div>

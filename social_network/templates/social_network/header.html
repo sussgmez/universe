@@ -1,0 +1,15 @@
+{% load static %}
+
+<header id="id_header">
+    <button id="id_btn_menu" class="btn" style="display: none;"> 
+        <p>Menú</p>
+        <img src="{% static 'images/menu_icon_2.png' %}" alt="">
+    </button>
+    <a id="id_logo_header" href="{% url 'home' %}">
+        <img src="{% static 'images/logo_2.png' %}" alt="">
+    </a>
+    <button id="id_btn_search" class="btn">
+        <p>Buscar</p>
+        <img src="{% static 'images/search_icon_2.png' %}" alt="">
+    </button>
+</header>

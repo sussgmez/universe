@@ -1,0 +1,64 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %}Inicio{% endblock title %}
+
+{% block content %}
+
+{% include "social_network/header.html" %}
+
+<!-- Content -->
+<div id="id_home_page" class="content">
+
+    {% include "social_network/navbar.html" %}
+
+    <div id="id_posts_section">
+        <div id="id_post_create">
+            <a id="id_profile_pic" href="{% url "profile" user.profile.pk %}">
+                {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="" srcset="">
+                {% else %}
+                    <img src="{% static 'images/no-profile.png' %}" alt="">
+                {% endif %}
+            </a>
+
+            <form action="{% url 'post-create' %}" method="post" enctype="multipart/form-data" id="id_form_post_create">
+                {% csrf_token %}
+                <input type="hidden" name="author" value="{{ user.profile.pk }}">
+                <div class="inputs-post-create">
+                    {{ post_form.content }}
+                    <div class="footer-inputs-post-create">
+                        <div id="id_select_category">
+                            <label for="id_category">Tema:</label>
+                            {{ post_form.category }}
+                        </div>
+                        <div id="id_input_image">
+                            <input type="file" name="image" accept="image/*" id="id_add_image">
+                            <label for="id_add_image" id="id_btn_add_image"><img src="{% static 'images/image_icon.png' %}" alt=""></label>
+                        </div>
+                        <input type="submit" class="btn" value="Publicar">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div id="id_posts"></div>
+
+    </div>
+
+    {% include "social_network/search_aside.html" %}
+
+    <div id="id_modal_image" style="display: none;">
+        <button id="id_btn_close_image">x</button>
+        <img id="id_open_image" src="" alt="">
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block scripts %}
+<script src="{% static 'js/pages/home.js' %}"></script>
+{% endblock scripts %}

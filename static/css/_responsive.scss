@@ -1,0 +1,32 @@
+@use 'variables' as v;
+
+@mixin xxs {
+    @media (max-width: v.$xxs) {
+        @content;
+    }
+};
+
+@mixin xs {
+    @media (max-width: v.$xs) {
+        @content;
+    }
+};
+
+@mixin sm {
+    @media (max-width: v.$sm) {
+        @content;
+    }
+};
+
+@mixin md {
+    @media (max-width: v.$md) {
+        @content;
+    }
+};
+
+@mixin lg {
+    @media (max-width: v.$lg) {
+        @content;
+    }
+};
+

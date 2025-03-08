@@ -1,0 +1,159 @@
+@use '../variables' as v;
+@use '../responsive' as r;
+
+
+#id_post_page {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+
+    @include r.md {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+#id_post_section {
+    min-height: 100vh;
+    width: 100%;
+    background-color: v.$white;
+
+    h3 {
+        font-weight: 700;
+        padding: 0.75rem;
+        font-size: 0.875rem;
+        border-bottom: 1px solid rgba(v.$black, 0.75);
+        color: rgba(v.$black, 0.9);
+    }
+
+    h4 {
+        font-weight: 700;
+        padding: 0.75rem;
+        font-size: 0.75rem;
+        border-bottom: 1px solid rgba(v.$black, 0.5);
+        color: rgba(v.$black, 0.9);
+    }
+
+    .post {
+        display: flex;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(v.$black, 0.5);
+        gap: 0.5rem;
+        .post-author-pic {
+            display: flex;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            img {
+                object-fit: cover;
+                width: 100%;
+            }
+        }
+        .post-body {
+            flex: 1;
+            .post-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 4px;
+                .post-author {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                    text-decoration: none;
+                    .post-author-name {
+                        font-size: 0.75rem;
+                        font-weight: 700;
+                    }
+                    .post-author-username {
+                        font-size: 0.6875rem;
+                        font-weight: 600;
+                        color: rgba(v.$black, 0.75);
+                    }
+                }
+                .post-created {
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    color: rgba(v.$black, 0.75);
+                }
+            }
+            .post-img {
+                cursor: pointer;
+                border-radius: 4px;
+                overflow: hidden;
+                margin-bottom: 4px;
+                display: flex;
+                max-height: 480px;
+                min-height: 300px;
+                img {
+                    object-fit: cover;
+                    width: 100%;
+                }
+            }
+            .post-text {
+                font-size: 0.75rem;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            .post-category {
+                font-size: 0.6875rem;
+                font-weight: 700;
+                color: rgba(v.$black, 0.75);
+                margin-bottom: 4px;
+            }
+            .post-footer {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-top: 0.75rem;
+                
+                .btn-like, .btn-comment {
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    border: none;
+                    background-color: transparent;
+                    gap: 0.25rem;
+                    padding: 0;
+                    font-size: 0.6875rem;
+                    font-weight: 700;
+                    text-decoration: none;
+                    img {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+               
+                }
+            }
+            .btn-delete-post {
+                cursor: pointer;
+                border: none;
+                background-color: transparent;
+                font-size: 0.6875rem;
+                font-weight: 700;
+                color: rgba(v.$danger-color, 0.8);
+                padding: 0;
+            }
+            .sub-post {
+                display: flex;
+                padding: 0.75rem;
+                border: 1px solid rgba(v.$black, 0.3);
+                border-radius: 4px;
+                gap: 0.5rem;
+                text-decoration: none;
+                margin-top: 6px;
+                .sub-post-author-pic {
+                    display: flex;
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: 1rem;
+                    overflow: hidden;
+                    img {
+                        object-fit: cover;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

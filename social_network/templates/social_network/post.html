@@ -1,0 +1,156 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% load social_network_extra %}
+
+{% block title %}{{ object.author }}{% endblock title %}
+
+{% block content %}
+
+{% include "social_network/header.html" %}
+<!-- Content -->
+<div id="id_post_page" class="content">
+    <input type="hidden" id="id_post" value="{{ object.pk }}">
+
+    {% include "social_network/navbar.html" %}
+
+    <div id="id_post_section">
+        <h3>Publicación</h3>
+        <div class="post" post-id={{ object.pk }}>
+            <a class="post-author-pic" href="{% url 'profile' object.author.pk %}">
+                {% if object.author.image %}
+                    <img src="{{ object.author.image.url }}" alt="" srcset="">
+                {% else %}
+                    <img src="{% static 'images/no-profile.png' %}" alt="" srcset="">
+                {% endif %}
+            </a>
+            <div class="post-body">
+                <div class="post-header">
+                    <a href="{% url "profile" object.author.pk %}" class="post-author">
+                        <p class="post-author-name">{{ object.author.user.get_full_name }}</p>
+                        <p class="post-author-username">@{{ object.author.user.username }}</p>
+                    </a>
+                    <p class="post-created">{{ object.created|date:'d/m/Y h:i a' }}</p>
+                </div>
+                <div class="post-content" >
+                    <p class="post-text">{{ object.content }}</p>
+                    {% if object.image %}
+                    <div class="post-img" onclick="open_image('{{ object.image.url }}')">    
+                        <img src="{{ object.image.url }}" alt="">
+                    </div>
+                    {% endif %}
+                    
+                    {% if post.category %}
+                    <p class="post-category">{{ object.category }}</p>
+                    {% endif %}
+
+                    {% if object.author == user.profile %}
+                        <form action="{% url 'post-delete' object.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn-delete-post" value="Eliminar publicación">
+                        </form>
+                    {% endif %}
+
+                    {% if object.commented and request.path != '/post/list/comment/' %}
+                        {% with sub_post=object.commented %}
+                        <a href="{% url "post" sub_post.pk %}" class="sub-post">
+                            <div class="sub-post-author-pic" href="{% url 'profile' sub_post.author.pk %}">
+                                {% if sub_post.author.image %}
+                                    <img src="{{ sub_post.author.image.url }}" alt="" srcset="">
+                                {% else %}
+                                    <img src="{% static 'images/no-profile.png' %}" alt="" srcset="">
+                                {% endif %}
+                            </div>
+                            <div class="post-body">
+                                <div class="post-header">
+                                    <div href="{% url "profile" sub_post.author.pk %}" class="post-author">
+                                        <p class="post-author-name">{{ sub_post.author.user.get_full_name }}</p>
+                                        <p class="post-author-username">@{{ sub_post.author.user.username }}</p>
+                                    </div>
+                                    <p class="post-created">{{ sub_post.created|date:'h:i a d/m/y' }}</p>
+                                </div>
+                                <div class="post-content" >
+                                    <div class="post-text" href="{% url "post" sub_post.pk %}">{{ sub_post.content }}</div>
+                                    {% if sub_post.image %}
+                                    <div class="post-img" onclick="event.preventDefault();event.stopPropagation();open_image('{{ sub_post.image.url }}'); ">    
+                                        <img src="{{ sub_post.image.url }}" alt="">
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+                        </a>                    
+                        {% endwith %}
+                    {% endif %}
+                </div>
+                <div class="post-footer">
+                    <div class="post-btn">
+                        <button class="btn-like" onclick="like_post('{% url "like-post" object.pk %}', this);">
+                            <p>{{ object|get_likes }}</p>
+                            <img 
+                                {% if object in user.profile.liked_post.all %}
+                                src="{% static 'images/hearth_icon_2.png' %}"
+                                {% else %}
+                                src="{% static 'images/hearth_icon.png' %}"
+                                {% endif %}
+                            >
+                        </button>
+                    </div>
+                    <div class="post-btn">
+                        <a class="btn-comment" href="{% url "post" object.pk %}">
+                            <p>{{ object|get_comments }}</p>
+                            <img src="{% static 'images/message_icon.png' %}" alt="" srcset="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4>Comentarios</h4>
+        <div id="id_post_create">
+            <div id="id_profile_pic">
+                {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="" srcset="">
+                {% else %}
+                    <img src="{% static 'images/no-profile.png' %}" alt="">
+                {% endif %}
+            </div>
+
+            <form action="{% url 'post-create' %}" method="post" enctype="multipart/form-data" id="id_form_post_create">
+                {% csrf_token %}
+                <input type="hidden" name="author" value="{{ user.profile.pk }}">
+                <div class="inputs-post-create">
+                    {{ post_form.content }}
+                    <input type="hidden" name="commented" id="id_commented" value="{{ object.pk }}">
+                    <div class="footer-inputs-post-create">
+                        <div id="id_select_category">
+                            <label for="id_category">Tema:</label>
+                            {{ post_form.category }}
+                        </div>
+                        <div id="id_input_image">
+                            <input type="file" name="image" accept="image/*" id="id_add_image">
+                            <label for="id_add_image" id="id_btn_add_image"><img src="{% static 'images/image_icon.png' %}" alt=""></label>
+                        </div>
+                        <input type="submit" class="btn" value="Comentar">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div id="id_posts"></div>
+
+    </div>
+
+    {% include "social_network/search_aside.html" %}
+
+    <div id="id_modal_image" style="display: none;">
+        <button id="id_btn_close_image">x</button>
+        <img id="id_open_image" src="" alt="">
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/pages/post.js' %}"></script>
+{% endblock scripts %}

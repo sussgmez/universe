@@ -1,0 +1,71 @@
+@forward './pages/login';
+@forward './pages/signup';
+@forward './pages/home';
+@forward './pages/post';
+@forward './pages/profile';
+@forward './pages/profile_update';
+@forward './pages/search';
+@forward './pages/post_list';
+@forward './pages/navbar';
+@forward './pages/header';
+@use 'variables' as v;
+@use 'responsive' as r;
+
+
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans', serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: v.$page;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    margin: 0;
+}
+
+a {
+    color: v.$black;
+}
+
+#id_logo {
+    width: 6rem;
+    img {
+        width: 100%;
+    }
+}
+
+#id_modal_image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(v.$black, 0.8);
+    backdrop-filter: blur(4px);
+
+    img {
+        max-width: 80vw;
+        max-height: 80vh;
+        border-radius: 4px;
+    }
+    #id_btn_close_image {
+        cursor: pointer;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: transparent;
+        color: v.$white;
+        border: none;
+        border-radius: 4px;
+        transition: all 0.1s;
+        &:hover {
+            background-color: rgba(v.$white, 0.1);
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{% load static %}
+
+<div id="id_search_modal" style="display: none;">
+    <div id="id_search_aside">
+        <div id="id_search">
+            <form action="{% url "search" %}" method="get" id="id_search_form">
+                <div id="id_div_category">
+                    <label>Tema: </label>
+                    <select name="category">
+                        <option value="0">--------</option>
+                        {% for category in categories %}
+                            <option value="{{ category.pk }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="text" name="text" class="form-input" placeholder="Buscar...">
+                <button class="btn"><img src="{% static 'images/search_icon.png' %}" alt=""></button>
+            </form>
+        </div>
+        <div id="id_categories">
+        </div>
+        <button id="id_btn_close_search">Cerrar buscador</button>
+    </div>
+</div>
