@@ -45,6 +45,34 @@ class Profile(models.Model):
         return f'profile_{self.user.username}'
     
 
+class Chat(models.Model):
+    name = models.CharField(_("Nombre"), max_length=100, blank=True, null=True)
+    profiles = models.ManyToManyField(Profile, verbose_name=_("Integrantes"), related_name='chats')
+    
+    class Meta:
+        verbose_name = _("chat")
+        verbose_name_plural = _("chats")
+
+    def __str__(self):
+        return f'ID: {self.pk}'
+
+
+class Message(models.Model):
+    sender_profile = models.ForeignKey(Profile, verbose_name=_("Remitente"), on_delete=models.CASCADE, related_name='messages')
+    receiver_chat = models.ForeignKey(Chat, verbose_name=_("Chat"), on_delete=models.CASCADE, related_name='messages')
+    content = models.TextField(_("Contenido"))
+
+    created = models.DateTimeField(_("Enviado"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("message")
+        verbose_name_plural = _("messages")
+
+    def __str__(self):
+        return f'ID: {self.pk}'
+
+
+
 @receiver(post_save, sender=User)
 def user_post_save_receiver(sender, instance, created, **kwargs):
     if created:

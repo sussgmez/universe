@@ -52,10 +52,15 @@
                 font-weight: 600;
                 margin-bottom: 8px;
             }
+            .follow-message {
+                display: flex;
+                gap: 0.25rem;
+            }
+            
             .btn {
                 font-size: 0.6875rem;
                 padding: 5px 20px;
-                border-radius: 4px;
+                border-radius: 2px;
                 width: fit-content;
                 font-weight: 600;
                 border: none;
@@ -71,6 +76,16 @@
                     background-color: v.$white; 
                     border: 1px solid v.$info-color;
                     color: v.$info-color;
+                }
+            }
+            .profile-message {
+                border: 1px solid v.$black;
+                background-color: v.$black;
+                color: v.$white;
+                text-decoration: none;
+                &:hover {
+                    background-color: v.$white;
+                    color: v.$black;
                 }
             }
             .profile-unfollow {

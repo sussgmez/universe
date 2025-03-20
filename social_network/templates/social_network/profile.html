@@ -37,19 +37,23 @@
                 {% if object.pk == user.profile.pk %}
                     <button class="btn profile-update" id="id_btn_update_profile">Editar perfil</button>
                 {% elif object in user.profile.following.all %}
-                <form action="{% url "unfollow" %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="following" value="{{ object.pk }}">
-                    <button class="btn profile-unfollow">Dejar de seguir -</button>
-                </form>
+                <div class="follow-message">
+                    <form action="{% url "unfollow" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="following" value="{{ object.pk }}">
+                        <button class="btn profile-unfollow">Dejar de seguir -</button>
+                    </form>
+                </div>
                 {% else %}
-                <form action="{% url "follow" %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="following" value="{{ object.pk }}">
-                    <button class="btn profile-follow">Seguir +</button>
-                </form>
+                <div class="follow-message">
+                    <form action="{% url "follow" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="following" value="{{ object.pk }}">
+                        <button class="btn profile-follow">Seguir +</button>
+                    </form>
+                    <a class="btn profile-message" href="{% url 'chat-get' %}?profile={{ object.pk }}">Enviar mensaje</a>
+                </div>
                 {% endif %}
-
             
                 <div class="profile-info">
                     <p><b>Seguidores: </b>{{ object.pk|get_followers }}</p>

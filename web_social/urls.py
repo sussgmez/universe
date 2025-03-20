@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.contrib.auth.views import LoginView
-from social_network.views import SingUpView, HomeView, PostCreateView, delete_post, PostListView, ProfileDetailView, SearchView, PostSearchListView, PostProfileListView, PostCommentListView, ProfileSearchListView, ProfileUpdateView, PostDetailView, follow, unfollow, activate, logout_handler, like_post
+from social_network.views import SingUpView, HomeView, PostCreateView, delete_post, PostListView, ProfileDetailView, SearchView, PostSearchListView, PostProfileListView, PostCommentListView, ProfileSearchListView, ProfileUpdateView, PostDetailView, ChatView, ChatDetailView, MessageCreateView, get_chat, follow, unfollow, activate, logout_handler, like_post
 
 
 urlpatterns = [
@@ -24,6 +24,10 @@ urlpatterns = [
     path('profile/list/search/', login_required(ProfileSearchListView.as_view()), name='profile-search-list'),
     path('profile/<int:pk>', login_required(ProfileDetailView.as_view()), name='profile'),
     path('profile/update/<int:pk>', login_required(ProfileUpdateView.as_view()), name='profile-update'),
+    path('chat/', login_required(ChatView.as_view()), name='chat'),
+    path('chat/<int:pk>', login_required(ChatDetailView.as_view()), name='chat'),
+    path('messsage/create/', login_required(MessageCreateView.as_view()), name='message-create'),
+    path('chat/get/', get_chat, name='chat-get'),
     path('follow/', follow, name='follow'),
     path('unfollow/', unfollow, name='unfollow'),
     path('activate/', activate, name='activate'),

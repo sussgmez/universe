@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from django.contrib.auth import login, logout
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib import messages
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.models import User
-from django.db.models import Q 
+from django.db.models import Q, Count
 from django.urls import reverse
 from django.http import HttpResponse
 from .tokens import generate_token
 from .forms import SignUpForm, PostForm, ProfileUpdateForm
-from .models import Post, Profile, Category
+from .models import Post, Profile, Category, Chat, Message
 
 
 class HomeView(TemplateView):
@@ -31,7 +31,7 @@ class SearchView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["text"] = self.request.GET['text']
-        context['categories'] = Category.objects.all()
+        context["categories"] = Category.objects.all()
         context["category_search"] = int(self.request.GET['category'])
         return context
     
@@ -165,6 +165,62 @@ class ProfileUpdateView(View):
             return redirect('profile', pk)
         else:
             return render(request, self.template_name, {'form':form})
+
+
+class ChatView(TemplateView):
+    template_name = "social_network/chat.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["profile_chats"] = Chat.objects.filter(profiles=self.request.user.profile)
+        return context
+    
+
+class ChatDetailView(DetailView):
+    model = Chat
+    template_name = "social_network/chat.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["profile_chats"] = Chat.objects.filter(profiles=self.request.user.profile)
+        return context
+    
+
+class MessageCreateView(CreateView):
+    model = Message
+    template_name = "social_network/message_create.html"
+    fields = ['sender_profile', 'receiver_chat', 'content']
+
+    def get_success_url(self):
+        
+        return reverse('chat', kwargs={'pk':self.object.receiver_chat.pk})
+
+
+
+
+def get_chat(request):
+    if request.method == 'GET':
+        profile1 = request.user.profile
+        profile2 = Profile.objects.get(pk=request.GET['profile'])
+        chats = Chat.objects.annotate(
+            profiles_count = Count('profiles')
+        ).filter(
+            profiles=profile1
+        ).filter(
+            profiles=profile2
+        ).filter(
+            profiles_count=2
+        )
+
+        if len(chats) == 0:
+            chat = Chat.objects.create()
+            chat.profiles.add(profile1)
+            chat.profiles.add(profile2)
+            chat.save()
+            return redirect('chat', pk=chat.pk)
+        else:
+            chat = chats[0]
+            return redirect('chat', pk=chat.pk)
 
 
 def activate(request):
