@@ -22,10 +22,22 @@
 			<p class="chat__name">{{ chat|get_chat_name:user }}</p>
 		</div>
 
-		<div class="chat__messages" id="id_sse_messsages"></div>
+		<div class="chat__messages" id="id_messsages">
+            {% for message in chat.messages.all %}
+            <div class="chat__message {% if user.profile == message.author %}chat__message-user{% endif %}">
+                <div class="chat__message-info">
+                    <p class="chat__message-sender">{{message.author.user.username}}</p>
+                    <p class="chat__message-date">{{message.created|date:'d/m H:i'}}</p>
+                </div>
+                <p class="chat__message-content">{{message.content}}</p>
+            </div>
+            {% endfor %}
+        </div>
 
-		<form onsubmit="return submit_message(event)" class="chat__send-message">
+		<form class="chat__send-message" method="post" action="{% url 'message-create' %}">
+            {% csrf_token %}
 			<input type="hidden" name="chat" value="{{ chat.pk }}">
+			<input type="hidden" name="author" value="{{ user.profile.pk }}">
 			<textarea class="chat__input-content" id="id_input_content" name="content" autofocus placeholder="Escribe tu mensaje..."></textarea>
 			<button class="chat__button-submit">Enviar</button>
 		</form>
@@ -42,6 +54,7 @@
 {% endblock content %}
 
 {% block scripts %}
+{% comment %} 
 <script>
 	let eventSource;
 	const sseData = document.getElementById('id_sse_messsages');
@@ -100,216 +113,7 @@
 		})
 	}
 </script>
+{% endcomment %}
 
 {% endblock scripts %}
 
-
-
-
-{% comment %} 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat</title>
-  </head>
-
-  <body>
-    <div class="header">
-      <h1>Welcome {{ request.session.username }}</h1>
-    </div>
-
-    <div class="container">
-      <div class="messages">
-        <div id="sse-data"></div>
-      </div>
-
-      <form
-        x-cloak
-        @submit.prevent="submit"
-        x-data="{state: 'composing', errors: {}}"
-      >
-        <div>
-          <textarea
-            name="content"
-            @input="state = 'composing'"
-            autofocus
-            placeholder="Your next message..."
-          ></textarea>
-          <button class="button">Send</button>
-        </div>
-
-        <div x-show="state === 'error'">
-          <p>Error sending your message ❌</p>
-        </div>
-      </form>
-
-      <form action="/lobby/" method="get">
-        <button type="submit">Return to Lobby</button>
-      </form>
-    </div>
-
-    <script>
-      let eventSource
-      const sseData = document.getElementById('sse-data')
-
-      function startSSE() {
-        eventSource = new EventSource('/stream-chat-messages/')
-        eventSource.onmessage = (event) => {
-          const data = JSON.parse(event.data)
-          console.log(data)
-          const messageHTML = `
-                    <div class="message-box">
-                        <div class="message-author">${data.author__user__username}</div>
-                        <div class="message-content">${data.content}</div>
-                    </div>`
-          sseData.innerHTML += messageHTML
-        }
-      }
-
-      // On load, start SSE if the browser supports it.
-      if (typeof EventSource !== 'undefined') {
-        startSSE()
-      } else {
-        sseData.innerHTML =
-          "Whoops! Your browser doesn't receive server-sent events."
-      }
-    </script>
-
-    <script>
-      function submit(event) {
-        event.preventDefault()
-        const formData = new FormData(event.target)
-
-        const endpointUrl = '/create-message/'
-        fetch(endpointUrl, {
-          method: 'post',
-          body: formData,
-          headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-          },
-        })
-          .then((response) => {
-            this.state = response.ok ? 'success' : 'error'
-            return response.json()
-          })
-          .then((data) => {
-            this.errors = data.errors || {}
-          })
-      }
-    </script>
-    <script
-      defer=""
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js"
-    ></script>
-  </body>
-</html>
-
-
------------------------------------------------------------------------
-{% endcomment %}
-
-
-{% comment %} 
-{% extends "core/base.html" %}
-
-{% load static %}
-
-{% load social_network_extra %}
-
-{% block title %}@{{ object.user.username }}{% endblock title %}
-
-{% block content %}
-
-{% include "header.html" %}
-
-<!-- Content -->
-<div id="id_chat_page" class="content">
-
-    {% include "navbar.html" %}
-
-    <div id="id_chats">
-        <h1>Chats</h1>
-        {% for chat in profile_chats %}
-            <a class="chat" href="{% url 'chat' chat.pk %}">
-                <div class="chat-image">
-                    <img src="{{ chat|get_chat_image:user }}" alt="">
-                </div>
-                <div class="chat-content">
-                    <p class="chat-name">{{ chat|get_chat_name:user }}</p>
-                    <div class="last-message">
-                        <p class="last-message-content">{{ chat.messages.last.content }}</p>
-                        <p class="last-message-date">{{ chat.messages.last.created|date:"d/m H:i" }}</p>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-    </div>
-    
-    <div id="id_chat">
-        {% if object %}
-            <div id="id_chat_info">
-                <div class="chat-image">
-                    <img src="{{ chat|get_chat_image:user }}" alt="">
-                </div>
-                <div class="chat-content">
-                    <p class="chat-name">{{ chat|get_chat_name:user }}</p>
-                </div>
-            </div>
-            <div id="id_messages">
-                {% for message in object.messages.all|get_100_messages %}
-                    {% if user.profile == message.sender_profile %}
-                        <div class="message message-user">
-                            <div class="message-info">
-                                <p class="message-sender">
-                                    {{ message.sender_profile.user.get_full_name }}
-                                </p>
-                                <p class="message-date">
-                                    {{ message.created|date:"d/m H:i" }}
-                                </p>
-                            </div>
-                            <p class="message-content">
-                                {{ message.content }}
-                            </p>
-                        </div>
-                    {% else %}  
-                        <div class="message">
-                            <div class="message-info">
-                                <p class="message-sender">
-                                    {{ message.sender_profile.user.get_full_name }}
-                                </p>
-                                <p class="message-date">
-                                    {{ message.created|date:"d/m H:i" }}
-                                </p>
-                            </div>
-                            <p class="message-content">
-                                {{ message.content }}
-                            </p>
-                        </div>
-                    {% endif %}    
-                {% endfor %}
-            </div>
-            <form id="id_form_message" action="{% url 'message-create' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="sender_profile" value="{{ user.profile.pk }}">
-                <input type="hidden" name="receiver_chat" value="{{ object.pk }}">
-                <textarea name="content" id="id_message_content" name="content" placeholder="Escribe tu mensaje..." required></textarea>
-                <input id="id_message_submit" type="submit" value="Enviar">
-            </form>
-        {% else %}
-            <p class="no-chat">Seleccione un chat</p>
-        {% endif %}
-    </div>
-
-    
-    {% include "search_aside.html" %}
-</div>
-
-{% endblock content %}
-
-
-{% block scripts %}
-
-{% endblock scripts %}
-{% endcomment %}

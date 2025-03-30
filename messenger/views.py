@@ -2,10 +2,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView, CreateView, DetailView
 from django.db.models import Count
 from django.urls import reverse
-from django.http import HttpResponse, StreamingHttpResponse
-from django.utils.timezone import make_aware, make_naive
-import asyncio
-import json
+from django.http import HttpResponse
 from .models import Chat, Message
 from authentication.models import Profile
 
@@ -29,11 +26,11 @@ class ChatDetailView(DetailView):
 class MessageCreateView(CreateView):
     model = Message
     template_name = "message_create.html"
-    fields = ['sender_profile', 'receiver_chat', 'content']
+    fields = ['author', 'chat', 'content']
+
 
     def get_success_url(self):
-        
-        return reverse('chat', kwargs={'pk':self.object.receiver_chat.pk})
+        return reverse('chat', kwargs={'pk':self.object.chat.pk})
 
 def get_chat(request):
     if request.method == 'GET':
@@ -59,6 +56,7 @@ def get_chat(request):
             chat = chats[0]
             return redirect('chat', pk=chat.pk)
 
+
 def create_message(request):
     content = request.POST.get("content")
     chat = Chat.objects.get(pk=request.POST.get("chat"))
@@ -69,6 +67,8 @@ def create_message(request):
     else:
         return HttpResponse(status=200)
 
+
+"""
 async def stream_chat_messages(request, pk):
     async def event_stream():
         async for message in get_existing_messages():
@@ -99,3 +99,6 @@ async def stream_chat_messages(request, pk):
         return last_message.id if last_message else 0
 
     return StreamingHttpResponse(event_stream(), content_type='text/event-stream')
+"""
+
+
