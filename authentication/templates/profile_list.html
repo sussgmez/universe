@@ -1,0 +1,31 @@
+{% load static %}
+
+{% for profile in profile_list %}
+<a href="{% url 'profile' profile.pk %}" class="profile">
+    <div class="profile__profile-pic">
+        {% if profile.image %}
+        <img src="{{ profile.image.url }}">
+        {% else %}
+        <img src="{% static 'images/no-profile.png' %}">
+        {% endif %}
+    </div>
+    <div class="profile__body">
+        <div class="profile__info">
+            <p class="profile__name">{{ profile.user.get_full_name }}</p>
+            <p class="profile__username">@{{ profile.user.username }}</span></p>
+        </div>
+        {% if profile.description %}
+        <p class="profile__description">{{ profile.description }}</p>
+        {% else %}
+        <p class="profile__description">-</p>
+        {% endif %}
+    </div>
+</a>
+{% empty %}
+<p class="profiles__empty">No se encontraron usuarios.</p>
+{% endfor %}
+
+{% if page_obj.has_next %}
+    <button class="profile-list__button-get" id="id_button_get_profiles" onclick="get_profiles({{ page_obj.next_page_number }});">Cargar mas +</button>
+{% endif %}
+

@@ -1,0 +1,19 @@
+{% load static %}
+
+<header class="page-header">
+    <button class="page-header__button page-header__button-menu" id="id_button_menu" style="display: none;">Menú
+        <img src="{% static 'images/menu_icon_2.png' %}">
+    </button>
+    <a href="{% url 'home' %}" class="page-header__logo">
+        <img src="{% static 'images/logo_2.png' %}">
+    </a>
+    {% if '/chat/' in request.path %}
+    <button class="page-header__button page-header__button-chat" id="id_button_chat" style="display: none;">Chats
+        <img src="{% static 'images/chat_icon.png' %}">
+    </button>
+    {% else %}
+    <button class="page-header__button page-header__button-search" id="id_button_search" style="display: none;">Buscar
+        <img src="{% static 'images/search_icon_2.png' %}">
+    </button>
+    {% endif %}
+</header>

@@ -1,0 +1,24 @@
+{% load static %}
+{% load messenger_extra %}
+
+<div class="chat-modal" id="id_chat_modal">
+    <div class="chat-aside">
+        <div class="chat-aside__header">
+            <button class="chat-aside__button-back" id="id_button_back_chat"><img src="{% static 'images/back_icon.png' %}" alt=""></button>
+            <h1>Chats</h1>
+        </div>
+        <div class="chat-list">
+            {% for chat_item in chat_list %}
+            <a class="chat-item" href="{% url 'chat' chat_item.pk %}">
+                <div class="chat-item__image">
+                    <img src="{{ chat_item|get_chat_image:user }}" alt="">
+                </div>
+                <div class="chat-item__info">
+                    <p class="chat-item__name">{{ chat_item|get_chat_name:user }}</p>
+                    <p class="chat-item__description">{{ chat_item|get_chat_description:user }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

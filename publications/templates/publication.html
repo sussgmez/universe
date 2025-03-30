@@ -1,0 +1,161 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% load publications_extra %}
+{% load authentication_extra %}
+
+{% block title %}{{ object.author }}{% endblock title %}
+
+{% block content %}
+
+{% include "header.html" %}
+
+<div class="publication-page">
+    
+    {% include "navbar.html" %}
+
+    <div class="publication-section">
+        <div class="main-publication" id="id_publication" main-publication-id="{{ publication.pk }}">
+            <a href="{% url 'profile' publication.author.pk %}" class="main-publication__author-pic">
+                {% if publication.author.image %}
+                    <img src="{{ publication.author.image.url }}" alt="" srcset="">
+                {% else %}
+                    <img src="{% static 'images/no-profile.png' %}" alt="" srcset="">
+                {% endif %}
+            </a>
+            <div class="main-publication__body">
+                <div class="main-publication__header">
+                    <a href="{% url "profile" publication.author.pk %}" class="main-publication__author">
+                        <p class="main-publication__author-name">{{ publication.author.user.get_full_name }}</p>
+                        <p class="main-publication__author-username">@{{ publication.author.user.username }}</p>
+                        <p class="main-publication__created"> · {{ publication.created|format_date }}</p>
+                    </a>
+                    {% if publication.author == user.profile %}
+                    <button class="main-publication__btn-menu" onclick="$('.main-publication__menu').hide();$(this.parentNode).children('.main-publication__menu').show();event.stopPropagation();">
+                        <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
+                            <path d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z" fill="#13183B"></path> 
+                            <path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="#13183B"></path> 
+                            <path d="M21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z" fill="#13183B"></path></g>
+                        </svg>
+                    </button>
+                    <div class="main-publication__menu" style="display: none;">
+                        <div class="main-publication__menu-option">
+                            <form action="{% url 'publication-delete' publication.pk %}" method="post" id="id_form_publication_delete">
+                                {% csrf_token %}
+                                <input class="publication__btn-delete" type="submit" value="Eliminar publicación">
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="main-publication__content">
+                    <p class="main-publication__text">{{ publication.content }}</p>
+                    {% if publication.image %}
+                    <div class="main-publication__image" onclick="open_image('{{ publication.image.url }}')">
+                        <img src="{{ publication.image.url }}" alt="">
+                    </div>
+                    {% endif %}
+
+                    {% if publication.category %}
+                    <p class="main-publication__category">{{ publication.category }}</p>
+                    {% endif %}
+
+                    {% if publication.commented %}
+                    {% with sub_publication=publication.commented %}
+                    <a href="{% url 'publication' sub_publication.pk %}" class="sub-publication">
+                        <div href="{% url 'profile' publication.author.pk %}" class="sub-publication__author-pic">
+                            {% if sub_publication.author.image %}
+                                <img src="{{ sub_publication.author.image.url }}" alt="" srcset="">
+                            {% else %}
+                                <img src="{% static 'images/no-profile.png' %}" alt="" srcset="">
+                            {% endif %}
+                        </div>
+                        <div class="sub-publication__body">
+                            <div class="sub-publication__header">
+                                <div class="sub-publication__author">
+                                    <p class="sub-publication__author-name">{{ sub_publication.author.user.get_full_name }}</p>
+                                    <p class="sub-publication__author-username">@{{ sub_publication.author.user.username }}</p>
+                                </div>
+                            </div>
+                            <div class="sub-publication__content">
+                                <p class="sub-publication__text">{{ sub_publication.content }}</p>
+                                {% if sub_publication.image %}
+                                <div class="sub-publication__image">
+                                    <img src="{{ sub_publication.image.url }}" alt="">
+                                </div>
+                                {% endif %}
+
+                                {% if publication.category %}
+                                <p class="sub-publication__category">{{ publication.category }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    {% endwith %}
+                    {% endif %}
+
+                </div>
+                <div class="main-publication__footer">
+                    <div class="main-publication__button main-publication__like_button" onclick="like_publication('{% url "like-publication" publication.pk %}', this);">{{ publication|get_likes }}<img 
+                            {% if publication in user.profile.liked_publication.all %}
+                            src="{% static 'images/hearth_icon_2.png' %}"
+                            {% else %}
+                            src="{% static 'images/hearth_icon.png' %}"
+                            {% endif %}
+                        >
+                    </div>
+                    <a class="main-publication__button main-publication__comment_button" href="{% url "publication" publication.pk %}">{{ publication|get_comments }}<img src="{% static 'images/comment_icon.png' %}" alt="" srcset="">
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="comments">
+            <p class="comments__p">Comentarios</p>
+            <div class="publication-create">
+                <div class="publication-create__profile-pic">
+                    {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="{{ user.username }}">
+                    {% else %}
+                    <img src="{% static 'images/no-profile.png' %}" alt="{{ user.username }}">
+                    {% endif %}
+                </div>
+                <form class="publication-create__form" action="{% url 'publication-create' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="author" value="{{ user.profile.pk }}">
+                    <input type="hidden" name="commented" id="id_commented" value="{{ publication.pk }}">
+                    <input type="hidden" name="category" value="{{ publication.category.pk }}">
+                    
+                    <div class="publication-create__input-content">
+                        {{ publication_form.content }}
+                    </div>
+                    <div class="publication-create__footer">
+                        
+                        <div class="publication-create__input-image">
+                            {{ publication_form.image }}
+                            <label for="id_image"><img src="{% static 'images/image_icon.png' %}" alt="Añadir imagen"></label>
+                        </div>
+                        <button class="publication-create__btn-submit">Comentar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="id_comments" class="publication-list"></div>
+        </div>
+    </div>
+
+    {% include "search_aside.html" %}
+
+    <div class="image-modal" id="id_image_modal" style="display: none;">
+        <img id="id_open_image" src="">
+    </div>
+
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/pages/publication.js' %}"></script>
+{% endblock scripts %}

@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="search-modal" id="id_search_modal">
+    <div class="search-aside">
+        <div class="search-sticky">
+            <div class="search-aside__header">
+                <button class="search-aside__button-back" id="id_button_back_search"><img src="{% static 'images/back_icon.png' %}" alt=""></button>
+                <h4>Buscar</h4>
+            </div>
+            <form action="{% url "search" %}" method="get" class="search-form">
+                <div class="search-aside__input-text">
+                    <input type="text" name="text" placeholder="Escribe tu búsqueda" required>
+                </div>
+                <button class="search-aside__button"><img src="{% static 'images/search_icon.png' %}" alt=""></button>
+            </form>
+            <p class="search-aside__p">Explorar</p>
+            <div class="search-aside__categories">
+                {% for category in categories %}
+                <a href="{% url 'search' %}?text=&category={{ category.pk }}" class="search-aside__category"><p>{{ category.name }}</p><p class="num">{{ category.trend }}</p></a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

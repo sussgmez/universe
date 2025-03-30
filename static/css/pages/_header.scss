@@ -1,0 +1,100 @@
+@use '../variables' as v;
+@use '../responsive' as r;
+
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: v.$black;
+    padding: 0.25rem 1rem;
+
+    .page-header__logo {
+        width: 3rem;
+        display: flex;
+        padding: 0.25rem;
+    }
+    .page-header__button {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        background-color: v.$black;
+        border: 1px solid v.$white;
+        border-radius: 2px;
+        color: v.$white;
+        gap: 0.25rem;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        img {
+            width: 1.25rem;
+        }
+        &:hover {
+            background-color: rgba(v.$white, 0.1);
+        }
+    }
+    
+    @include r.md {
+        .page-header__button-search {
+            display: flex !important;
+        }
+        .page-header__button-chat {
+            display: flex !important;
+        }
+        
+    }
+    @include r.sm {
+        .page-header__button-menu {
+            display: flex !important;
+        }
+    }
+}
+
+/*
+#id_header {
+    display: flex;
+    align-items: center;
+    background-color: v.$black;
+    justify-content: space-between;
+    border-bottom: 1px solid v.$black;
+    padding: 0.25rem 1rem;
+    height: 3.5rem;
+
+    #id_logo_header {
+        width: 3rem;
+        display: flex;   
+        padding: 0.25rem; 
+    }
+
+    .btn {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 2px;
+        border: 1px solid rgba(v.$white, 1);
+        color: v.$white;
+        gap: 0.25rem;
+        &:hover {
+            background-color: rgba(v.$white, 0.1);
+        }
+        img {
+            width: 1.25rem;
+        }
+        p {
+            font-size: 0.6875rem;
+            font-weight: 600;
+        }
+    }
+    img {
+        width: 100%;
+    }
+    @include r.md {
+        #id_btn_menu {
+            display: flex !important;
+        }
+    }
+    
+}*/

@@ -1,0 +1,66 @@
+@forward './pages/login';
+@forward './pages/signup';
+@forward './pages/home';
+@forward './pages/chat';
+@forward './pages/publication';
+@forward './pages/profile';
+@forward './pages/profile_update';
+@forward './pages/profile_list';
+@forward './pages/search';
+@forward './pages/publication_list';
+@forward './pages/navbar';
+@forward './pages/header';
+@use 'variables' as v;
+@use 'responsive' as r;
+
+
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans', serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: v.$page;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    margin: 0;
+}
+
+a {
+    color: v.$black;
+}
+
+#id_logo {
+    width: 6rem;
+    img {
+        width: 100%;
+    }
+}
+
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(v.$black, 0.8);
+    backdrop-filter: blur(4px);
+
+    img {
+        max-width: 80vw;
+        width: fit-content;
+        max-height: 80vh;
+        height: fit-content;
+        border-radius: 4px;
+        object-fit: contain;
+    }
+}
+
+img {
+    width: 100%;
+}

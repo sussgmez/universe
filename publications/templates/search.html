@@ -1,0 +1,63 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %}Búsqueda: {{ text }}{% endblock title %}
+
+{% block content %}
+
+{% include "header.html" %}
+
+<div class="search">
+    {% include "navbar.html" %}
+    <div class="search-section">
+        <div class="search-form">
+            <div class="search-form__header">
+                {% if text %}
+                <h4>Resultados para: <span>{{ text }}</span></h4>
+                {% endif %}
+                {% if category_search %}
+                <h4>Categoría: <span>{{ category_search.name }}</span></h4>
+                {% endif %}
+                {% if not text and not category_search %}
+                <h4>Ingresa una búsqueda</h4>
+                {% endif %}
+            </div>
+            <form action="{% url 'search' %}" method="get" class="search-form__inputs">
+                <input type="text" placeholder="Escribe tu búsqueda" name="text" class="search-form__input search-form__input-text" id="id_search_text" value="{{ text }}">
+                <div class="search-form__input search-form__input-category">
+                    <label for="id_category_input">Tema:</label>
+                    <select name="category" id="id_category_input">
+                        <option value="0">---------</option>
+                        {% for category in categories %}
+                        <option value="{{ category.pk }}" {% if category.pk == category_search.pk %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="search-form__button">Buscar <img src="{% static 'images/search_icon.png' %}" alt=""></button>
+            </form>
+        </div>
+
+        {% if text != '' %}
+        <p class="search__header-list">Perfiles</p>
+        <div class="profile-list" id="id_profiles"></div>
+        {% endif %}
+
+        <p class="search__header-list">Publicaciones</p>
+        <div class="publication-list" id="id_publications"></div>
+    
+    </div>
+
+   
+    {% include "search_aside.html" %}    
+    
+    <div class="image-modal" id="id_image_modal" style="display: none;">
+        <img id="id_open_image" src="">
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/pages/search.js' %}"></script>
+{% endblock scripts %}

@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %}Registrarse{% endblock title %}
+
+{% block content %}
+
+<div class="singup-page">
+    <div class="singup">
+        <div class="singup-header">
+            <div class="singup-header__logo">
+                <img src="{% static 'images/logo.png' %}" alt="universe">
+            </div>
+            <h1>Regístrate en <span>UNIVERSE</span></h1>
+        </div>
+        <form class="singup-form" method="post">
+            <p class="singup-form__header">Crear cuenta</p>
+            {% csrf_token %}
+            <label class='singup-form__label' for='id_' class="floating-label">Nombre</label>
+            {{ form.first_name }}
+            <label class='singup-form__label' for='id_' class="floating-label">Apellido</label>
+            {{ form.last_name }}
+            <label class='singup-form__label' for='id_' class="floating-label">Nombre de usuario</label>
+            {{ form.username }}
+            <label class='singup-form__label' for='id_' class="floating-label">Email</label>
+            {{ form.email }}
+            <label class='singup-form__label' for='id_' class="floating-label">Contraseña</label>
+            {{ form.password1 }}
+            <label class='singup-form__label' for='id_' class="floating-label">Confirmar contraseña</label>
+            {{ form.password2 }}
+            {% for error in form.non_field_errors %}
+                <p class="singup-form__text-error">{{ error }}</p>
+            {% endfor %}
+            <button type="submit" class="singup-form__button">Registrarse</button>
+            <p class="singup-form__login">O si ya tienes cuenta, <a href="{% url "login" %}">Iniciar sesión</a></p>
+        </form>
+    </div>
+    <div class="signup__bg-image">
+        <img src="{% static 'images/bg_login.jpg' %}" alt="">
+    </div>
+</div>
+
+{% endblock content %}

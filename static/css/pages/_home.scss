@@ -1,0 +1,276 @@
+@use '../variables' as v;
+@use '../responsive' as r;
+
+
+.home {
+    display: grid;
+    grid-template-columns: 240px 1fr 240px;
+
+    background-color: v.$secondary-color;
+
+    @include r.md {
+        grid-template-columns: 240px 1fr;
+    }
+    @include r.sm {
+        grid-template-columns: 1fr;
+    }
+    
+}
+
+.publications-section {
+    background-color: v.$white;
+    min-height: 100vh;
+}
+
+.publication-create {
+    $size_profile_pic: 48px;
+    display: grid;
+    grid-template-columns: $size_profile_pic 1fr;
+    background-color: v.$white;
+    border-bottom: 1px solid rgba(v.$black, $alpha: 0.5);
+    padding: 1rem;
+    gap: 1rem;
+
+    .publication-create__profile-pic {
+        img {
+            width: $size_profile_pic;
+            height: $size_profile_pic;
+            object-fit: cover;
+            border-radius: calc($size_profile_pic / 2);
+        }
+    }
+
+    .publication-create__form {
+        border: 1px solid v.$black;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .publication-create__input-content {
+        border-bottom: 1px solid rgba(v.$black, 0.25);
+        textarea {
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            resize: none;
+            border: none;
+            width: 100%;
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .publication-create__footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.25rem;
+    }
+
+    .publication-create__input-category {
+        flex: 1;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        label {
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        select {
+            appearance: none;
+            border: none;
+            font-size: 0.75rem;
+            padding: 0 0.25rem;
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .publication-create__input-image {
+        display: flex;
+        align-items: center;
+        text-align: end;
+        gap: 4px;
+        #id_image {
+            color: rgba(v.$black, 0.85);
+            cursor: pointer;
+            font-size: 0.6875rem;
+            max-width: 140px;
+            &::file-selector-button {
+                display: none;
+            }
+        }
+        label {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            display: flex;
+        }
+    }
+
+    .publication-create__btn-submit {
+        cursor: pointer;
+        background-color: v.$black;
+        color: v.$white;
+        font-weight: 600;
+        font-size: 0.6875rem;
+        border: none;
+        border-radius: 2px;
+        padding: 0.4rem 0.5rem;
+        &:hover {
+            background-color: rgba(v.$black, 0.8);
+        }
+    }
+    @include r.xs {
+        grid-template-columns: 1fr;  
+        .publication-create__profile-pic {
+            display: none;
+        }
+        .publication-create__footer {
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0.5rem;
+        }   
+        .publication-create__input-category {
+            min-width: 100%;
+            select {
+                width: 100%;
+            }
+        }
+        .publication-create__input-image {
+            flex-direction: row-reverse;
+            justify-content: start;
+        }
+    }
+}
+
+/*
+
+#id_home_page {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+
+    @include r.md {
+        grid-template-columns: 1fr;
+    }
+}
+
+#id_publications_section {
+    width: 100%;
+    background-color: v.$white;
+    min-height: 800px;
+}
+
+#id_publication_create {
+    padding: 1rem;
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid rgba(v.$black, 0.25);
+    background-color: rgba(v.$secondary-color, 0.5);
+    #id_profile_pic {
+        display: flex;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        img {
+            object-fit: cover;
+            width: 100%;
+        }
+    }
+    #id_form_publication_create {
+        flex: 1;
+        background-color: v.$white;
+
+        .inputs-publication-create {
+            border: 1px solid v.$black;
+            border-radius: 4px;
+            overflow: hidden;
+            #id_content {
+                resize: none;
+                padding: 0.5rem;
+                font-size: 0.75rem;
+                border: none;
+                border-bottom: 1px solid rgba(v.$black, 0.25);
+                width: 100%;
+                &:focus {
+                    outline: none;
+                }
+            }
+            #id_btn_add_image {
+                width: 20px;
+                height: 20px;
+                display: flex;
+            }
+            #id_add_image {
+                font-size: 0.6875rem;
+                font-weight: 600;
+                width: 142px;
+
+                &::file-selector-button {
+                    display: none;
+                }
+            }
+            .footer-inputs-publication-create {
+                display: flex;
+                padding: 4px;
+                align-items: center;
+                gap: 8px;
+                label {
+                    font-size: 0.6875rem;
+                    font-weight: 600;
+                }
+                #id_select_category  {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                    padding-left: 0.25rem;
+                    #id_category {
+                        width: 100%;
+                        appearance: none;
+                        border: none;
+                        font-size: 0.75rem;
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+                }
+                #id_input_image {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: end;
+                }
+                .btn {
+                    cursor: pointer;
+                    background-color: v.$black;
+                    border-radius: 4px;
+                    border: none;
+                    padding: 0.5rem;
+                    font-size: 0.6875rem;
+                    color: v.$white;
+                    font-weight: 600;
+                    &:hover {
+                        background-color: rgba(v.$black, 0.9);
+                    }
+                }
+                @include r.xs {
+                    flex-direction: column;
+                    align-items: normal;
+                    
+                    #id_input_image {
+                        flex-direction: row-reverse;
+                        justify-content: start;
+                        gap: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+*/

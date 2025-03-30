@@ -1,0 +1,119 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% load authentication_extra %}
+
+{% block title %}@{{ profile.user.username }}{% endblock title %}
+
+{% block content %}
+
+{% include "header.html" %}
+
+
+<div class="profile-page">
+
+    {% include "navbar.html" %}
+
+    <div class="profile-section">
+        <div class="profile">
+            <div class="profile__profile-pic">
+                {% if profile.image %}
+                    <img src="{{ profile.image.url }}" alt="" srcset="">
+                {% else %}
+                    <img src="{% static 'images/no-profile.png' %}" alt="">
+                {% endif %}
+            </div>
+            <div class="profile__content">
+                <p class="profile__name">{{ profile.user.get_full_name }}</p>
+                <p class="profile__username">@{{ profile.user.username }}</p>
+                {% if profile.description %}
+                <p class="profile__description">{{ profile.description }}</p>
+                {% else %}
+                <p class="profile__description">-</p>
+                {% endif %}
+
+                {% if profile.pk == user.profile.pk %}
+                <button class="profile__button profile__button-update" id="id_profile_button_update">Editar perfil</button>
+                {% elif profile in user.profile.following.all %}
+                <div class="profile__options">
+                    <form action="{% url "unfollow" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="following" value="{{ profile.pk }}">
+                        <button class="profile__button profile__button-unfollow">Dejar de seguir -</button>
+                    </form>
+                    <a class="profile__button profile__button-message" href="{% url 'get-chat' %}?profile={{ profile.pk }}">Enviar mensaje</a>
+                </div>
+                {% else %}
+                <div class="profile__options">
+                    <form action="{% url "follow" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="following" value="{{ profile.pk }}">
+                        <button class="profile__button profile__button-follow">Seguir +</button>
+                    </form>
+                    <a class="profile__button profile__button-message" href="{% url 'get-chat' %}?profile={{ profile.pk }}">Enviar mensaje</a>
+                </div>
+                {% endif %}
+                <div class="profile__info">
+                    <div class="profile__info-item">
+                        <p class="profile__info-header">Seguidores</p>
+                        <p>{{ profile.pk|get_followers }}</p>
+                    </div>
+                    <div class="profile__info-item">
+                        <p class="profile__info-header">Siguiendo</p>
+                        <p>{{ profile.following.all|length|add:-1 }}</p>
+                    </div>
+                    <div class="profile__info-item">
+                        <p class="profile__info-header">Publicaciones</p>
+                        <p>{{ profile.publication.all|length }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="publication-list" id="id_publications"></div>
+
+    </div>
+
+    {% include "search_aside.html" %}
+    
+    <div class="image-modal" id="id_image_modal" style="display: none;">
+        <img id="id_open_image" src="">
+    </div>
+
+</div>
+
+{% if profile.pk == user.profile.pk %}
+<div id="id_profile_modal_update" style="display: none;">
+    <form id="id_form_profile_update" action="{% url "profile-update" profile.pk %}" enctype="multipart/form-data" method="post" class="profile-form">
+        {% csrf_token %}
+        <h3 class="profile-form__header">Actualizar perfil</h3>
+        <div class="profile-form__field">
+            <label for="id_first_name">Nombre</label>
+            <input type="text" name="first_name" class="profile-form__input" placeholder="" maxlength="100" required="" id="id_first_name" value="{{ profile.user.first_name }}">
+        </div>
+        <div class="profile-form__field">
+            <label for="id_last_name">Apellido</label>
+            <input type="text" name="last_name" class="profile-form__input" placeholder="" maxlength="100" required="" id="id_last_name" value="{{ profile.user.last_name }}">
+        </div>
+        <div class="profile-form__field profile-form__field-2">
+            <label for="id_image">Foto de perfil</label>
+            <input type="file" name="image" class="profile-form__input-image" accept="image/*" id="id_image">
+        </div>
+        <div class="profile-form__field profile-form__field-2">
+            <label for="id_description">Descripción</label>
+            <textarea name="description" id="id_description" class="profile-form__input" rows="3" placeholder="Añada una descripción a su perfil.">{% if profile.description %}{{ profile.description }}{% endif %}</textarea>
+        </div>  
+
+        <input type="submit" class="profile-form__button-submit" value="Actualizar">
+        <button id="id_button_close_form">x</button>
+        
+    </form>
+
+</div>
+{% endif %}
+{% endblock content %} 
+
+{% block scripts %}
+<script src="{% static 'js/pages/profile.js' %}"></script>
+{% endblock scripts %}
