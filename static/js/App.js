@@ -61,11 +61,9 @@ $(document).ready(function () {
     });
     
 
-
-    $('#id_btn_close_search').click(function (e) { 
-        e.preventDefault();
-        $('#id_search_modal').hide();
-    });
+    setTimeout(() => {
+        $('.message').fadeOut(2000);
+    }, "8000")
 
 });
 

@@ -3152,4 +3152,23 @@ img {
   width: 100%;
 }
 
+.messages {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+}
+.messages .message {
+  width: fit-content;
+  margin: auto;
+  background-color: #FFFFFF;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(30, 29, 38, 0.5);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #13183B;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
 /*# sourceMappingURL=style.css.map */

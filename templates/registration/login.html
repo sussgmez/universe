@@ -29,6 +29,16 @@
         <img src="{% static 'images/bg_login.jpg' %}" alt="">
     </div>
 
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message{% if message.tags %} message__{{ message.tags }}{% endif %}">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
 </div>
 
 {% endblock content %}

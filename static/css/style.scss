@@ -64,3 +64,22 @@ a {
 img {
     width: 100%;
 }
+
+.messages {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    .message {
+        width: fit-content;
+        margin: auto;
+        background-color: v.$white;
+        padding: 0.75rem 1rem;
+        border: 1px solid rgba(v.$black, 0.5);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: v.$primary-color;
+        border-radius: 2px;
+        margin-bottom: 4px;
+    }
+}

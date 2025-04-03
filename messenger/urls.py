@@ -7,5 +7,4 @@ urlpatterns = [
     path('chat/<int:pk>', login_required(views.ChatDetailView.as_view()), name='chat'),
     path('chat/get/', views.get_chat, name='get-chat'),
     path('messsage/create/', login_required(views.MessageCreateView.as_view()), name='message-create'),
-
 ]

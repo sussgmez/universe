@@ -2,7 +2,6 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView, CreateView, DetailView
 from django.db.models import Count
 from django.urls import reverse
-from django.http import HttpResponse
 from .models import Chat, Message
 from authentication.models import Profile
 
@@ -57,6 +56,7 @@ def get_chat(request):
             return redirect('chat', pk=chat.pk)
 
 
+"""
 def create_message(request):
     content = request.POST.get("content")
     chat = Chat.objects.get(pk=request.POST.get("chat"))
@@ -68,7 +68,6 @@ def create_message(request):
         return HttpResponse(status=200)
 
 
-"""
 async def stream_chat_messages(request, pk):
     async def event_stream():
         async for message in get_existing_messages():

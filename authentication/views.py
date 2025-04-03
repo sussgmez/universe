@@ -31,7 +31,7 @@ class SingUpView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.signup(request)
-            messages.success(request, "Se ha enviado un correo para activar su cuenta.")
+            messages.success(request, "Se ha enviado un correo de confirmación para activar su cuenta.")
             return redirect('login')
         else:
             return render(request, self.template_name, {'form':form})
@@ -52,7 +52,7 @@ class ProfileDetailView(DetailView):
 class ProfileSearchListView(ListView):
     model = Profile
     template_name = "profile_list.html"
-    paginate_by = 1
+    paginate_by = 5
 
     def get_queryset(self):
         profiles = Profile.objects.filter(Q(user__first_name__contains=self.request.GET['text']) | Q(user__last_name__contains=self.request.GET['text']) | Q(user__username__contains=self.request.GET['text']))
