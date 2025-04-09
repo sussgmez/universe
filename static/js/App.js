@@ -59,10 +59,9 @@ $(document).ready(function () {
         e.preventDefault();
         $("#id_image_modal").hide();
     });
-    
-
+        
     setTimeout(() => {
-        $('.message').fadeOut(2000);
+        $('.messages').fadeOut(2000);
     }, "8000")
 
 });

@@ -97,15 +97,19 @@
 
                 </div>
                 <div class="main-publication__footer">
-                    <div class="main-publication__button main-publication__like_button" onclick="like_publication('{% url "like-publication" publication.pk %}', this);">{{ publication|get_likes }}<img 
+                    <div class="main-publication__button main-publication__like_button" onclick="like_publication('{% url "like-publication" publication.pk %}', this);">
+                        <img 
                             {% if publication in user.profile.liked_publication.all %}
                             src="{% static 'images/hearth_icon_2.png' %}"
                             {% else %}
                             src="{% static 'images/hearth_icon.png' %}"
                             {% endif %}
                         >
+                        {{ publication|get_likes }}
                     </div>
-                    <a class="main-publication__button main-publication__comment_button" href="{% url "publication" publication.pk %}">{{ publication|get_comments }}<img src="{% static 'images/comment_icon.png' %}" alt="" srcset="">
+                    <a class="main-publication__button main-publication__comment_button" href="{% url "publication" publication.pk %}">
+                        <img src="{% static 'images/comment_icon.png' %}" alt="" srcset="">
+                        {{ publication|get_comments }}
                     </a>
                 </div>
             </div>

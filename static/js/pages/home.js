@@ -28,3 +28,7 @@ function show_menu(div) {
 $(document).ready(function () {
     get_publications();
 });
+
+$(document).click(function (e) { 
+    $('.publication__menu').hide();
+});

@@ -6,6 +6,9 @@ from django.db.models.signals import post_save
 
 
 class Profile(models.Model):
+    """
+    Modelo de perfiles de usuarios. Sirve como extensión del usuario por defecto de django.
+    """
     user = models.OneToOneField(User, verbose_name=_("Usuario"), on_delete=models.CASCADE)
     image = models.ImageField(_("Imagen"), upload_to='images/profile', blank=True, null=True)    
     description = models.CharField(_("Descripción"), max_length=200, blank=True, null=True)

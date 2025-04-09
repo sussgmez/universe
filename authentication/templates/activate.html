@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %}Activar cuenta{% endblock title %}
+
+{% block content %}
+
+<div class="activate-page">
+    <div class="activate">
+        <div class="activate-header">
+            <div class="activate-header__logo">
+                <img src="{% static 'images/logo.png' %}" alt="universe">
+            </div>
+            <h1>Activa tu cuenta <span>UNIVERSE</span></h1>
+        </div>
+        <form class="activate-form" method="post">
+            {% csrf_token %}
+            <label class='activate-form__label' for='id_email' class="floating-label">Email</label>
+            {{ form.email }}
+            <label class='activate-form__label' for='id_p_password' class="floating-label">Contraseña provisional</label>
+            {{ form.p_password }}
+            <label class='activate-form__label' for='id_password1' class="floating-label">Nueva contraseña</label>
+            {{ form.password1 }}
+            <label class='activate-form__label' for='id_password2' class="floating-label">Confirmar contraseña</label>
+            {{ form.password2 }}
+            {% for error in form.non_field_errors %}
+                <p class="activate-form__text-error">{{ error }}</p>
+            {% endfor %}
+            <button type="submit" class="activate-form__button">Activar cuenta</button>
+            <p class="activate-form__login">O si ya tienes una cuenta, <a href="{% url "login" %}">iniciar sesión</a></p>
+        </form>
+    </div>
+    <div class="activate__bg-image">
+        <img src="{% static 'images/bg_login.jpg' %}" alt="">
+    </div>
+</div>
+
+{% endblock content %}

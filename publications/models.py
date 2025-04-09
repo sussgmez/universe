@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _  
-
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 class Category(models.Model):
     name = models.CharField(_("Categoria"), max_length=100)
@@ -20,4 +21,3 @@ class Publication(models.Model):
     commented = models.ForeignKey("self", verbose_name=_("Comentando"), on_delete=models.CASCADE, blank=True, null=True)
     created = models.DateTimeField(_("Fecha publicado"), auto_now_add=True)
     image = models.ImageField(_("Imagen"), upload_to='images/publication', blank=True, null=True)
-

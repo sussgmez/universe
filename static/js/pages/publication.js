@@ -25,3 +25,7 @@ async function get_publications(page=1) {
 $(document).ready(function () {
     get_publications();
 });
+
+$(document).click(function (e) { 
+    $('.main-publication__menu').hide();
+});

@@ -47,6 +47,16 @@ class PublicationCreateView(CreateView):
     def get(self, request, *args, **kwargs):
         return redirect('home')
 
+    def form_valid(self, form):
+        publication = form.save(commit=False)
+        publication.author = self.request.user.profile
+        publication.save()
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        return redirect('home')
+    
+
     def get_success_url(self):
         try:
             return reverse('publication', kwargs={'pk':self.object.commented.pk})
@@ -72,7 +82,7 @@ class PublicationListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        publications = Publication.objects.filter(author__in=self.request.user.profile.following.all())
+        publications = Publication.objects.filter(author__in=self.request.user.profile.following.all()).filter(commented=None)
         publications = publications.order_by('-created')
         return publications
     
@@ -85,9 +95,9 @@ class PublicationSearchListView(ListView):
     def get_queryset(self):
         category_pk = int(self.request.GET['category'])
         if category_pk != 0:
-            publications = Publication.objects.filter(Q(content__contains=self.request.GET['text']) & Q(category=category_pk))
+            publications = Publication.objects.filter(Q(content__contains=self.request.GET['text']) & Q(category=category_pk)).filter(commented=None)
         else:
-            publications = Publication.objects.filter(Q(content__contains=self.request.GET['text']))
+            publications = Publication.objects.filter(Q(content__contains=self.request.GET['text'])).filter(commented=None)
         publications = publications.order_by('-created')
         return publications
     
@@ -99,7 +109,7 @@ class PublicationProfileListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        publications = Publication.objects.filter(author=self.kwargs['pk'])
+        publications = Publication.objects.filter(author=self.kwargs['pk']).filter(commented=None)
         publications = publications.order_by('-created')
         return publications
     
@@ -124,12 +134,12 @@ def like_publication(request, pk):
             request.user.profile.liked_publications.remove(publication)
             request.user.profile.save()
             lk_publication = len(Profile.objects.filter(liked_publications=publication))
-            html = f'{lk_publication}<img src="/static/images/hearth_icon.png">'        
+            html = f'<img src="/static/images/hearth_icon.png">{lk_publication}'        
         else:
             request.user.profile.liked_publications.add(publication)
             request.user.profile.save()
             lk_publication = len(Profile.objects.filter(liked_publications=publication))
-            html = f'{lk_publication}<img src="/static/images/hearth_icon_2.png">'        
+            html = f'<img src="/static/images/hearth_icon_2.png">{lk_publication}'        
 
 
         return HttpResponse(html)

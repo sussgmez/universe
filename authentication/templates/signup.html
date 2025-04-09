@@ -2,43 +2,140 @@
 
 {% load static %}
 
-{% block title %}Registrarse{% endblock title %}
+{% load authentication_extra %}
+
+{% block title %}Añadir usuarios{% endblock title %}
 
 {% block content %}
 
-<div class="singup-page">
-    <div class="singup">
-        <div class="singup-header">
-            <div class="singup-header__logo">
-                <img src="{% static 'images/logo.png' %}" alt="universe">
-            </div>
-            <h1>Regístrate en <span>UNIVERSE</span></h1>
+{% include "header.html" %}
+
+<div class="signup-page">
+
+    {% include "navbar.html" %}
+
+    <div class="signup">
+        <h3 class="signup__header">Registro de usuarios</h3>
+        <div class="signup__info">
+            <img src="{% static 'images/warning_icon.png' %}" alt="">
+            <p>Todos los usuarios registrados deben activar su cuenta cambiando la contraseña provisional asignada.</p>
         </div>
-        <form class="singup-form" method="post">
-            <p class="singup-form__header">Crear cuenta</p>
+        <h4 class="form__header">Añadir usuario</h4>
+        <form action="{% url 'signup' %}" method="post" class="signup__form">
             {% csrf_token %}
-            <label class='singup-form__label' for='id_' class="floating-label">Nombre</label>
-            {{ form.first_name }}
-            <label class='singup-form__label' for='id_' class="floating-label">Apellido</label>
-            {{ form.last_name }}
-            <label class='singup-form__label' for='id_' class="floating-label">Nombre de usuario</label>
-            {{ form.username }}
-            <label class='singup-form__label' for='id_' class="floating-label">Email</label>
-            {{ form.email }}
-            <label class='singup-form__label' for='id_' class="floating-label">Contraseña</label>
-            {{ form.password1 }}
-            <label class='singup-form__label' for='id_' class="floating-label">Confirmar contraseña</label>
-            {{ form.password2 }}
-            {% for error in form.non_field_errors %}
-                <p class="singup-form__text-error">{{ error }}</p>
-            {% endfor %}
-            <button type="submit" class="singup-form__button">Registrarse</button>
-            <p class="singup-form__login">O si ya tienes cuenta, <a href="{% url "login" %}">Iniciar sesión</a></p>
+            <div class="form__field">
+                <label for="first_name">Nombre</label>
+                {{ form.first_name }}
+            </div>
+            <div class="form__field">
+                <label for="last_name">Apellido</label>
+                {{ form.last_name }}
+            </div>
+            <div class="form__field">
+                <label for="email">Email</label>
+                {{ form.email }}
+            </div>
+            <input class="form__button" type="submit" value="Añadir usuario  +">
         </form>
+        <h4 class="form__header">Cargar archivo (.xls)</h4>
+        <form method="post" enctype="multipart/form-data" action={% url 'signup-multiple' %} class="signup_file__form">
+            {% csrf_token %}
+            <div class="form__field">
+                <label for="id_file"><img src="{% static 'images/document_icon.png' %}" alt=""></label>
+                <input type="file" name="file" id="id_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+            </div>
+            <input type="submit" value="Cargar archivo" class="form__button">
+        </form>
+        <p class="signup_file__p">Puede registrar varios usuarios cargando un archivo .xls con el siguiente formato.</p>
+        <p class="signup_file__p"><b>Ejemplo:</b></p>
+        <div class="signup_file__example" style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>Apellidos</th>
+                    <th>Nombres</th>
+                    <th>Cédula</th>
+                    <th>Email</th>
+                </tr>
+                <tr>
+                    <td>López Pérez</td>
+                    <td>Mario José</td>
+                    <td>12345678</td>
+                    <td>email@example.com</td>
+                </tr>
+                <tr>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                </tr>
+                
+            </table>
+        </div>
+
     </div>
-    <div class="signup__bg-image">
-        <img src="{% static 'images/bg_login.jpg' %}" alt="">
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message__bg">
+            <div class="message {% if message.tags %} message__{{ message.tags }}{% endif %}">
+                {% if message.tags == 'error' %}
+                    <img src="{% static 'images/danger_icon.png' %}" alt="">
+                    <p><b>Error: </b>{{ message }}</p>
+                {% elif message.tags == 'success' %}
+                    <img src="{% static 'images/info_icon.png' %}" alt="">
+                    <p>{{ message }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
+    {% endif %}
+    
+    <div class="image-modal" id="id_image_modal" style="display: none;">
+        <img id="id_open_image" src="">
+    </div>
+
 </div>
 
-{% endblock content %}
+{% endblock content %} 
+
+
+{% comment %} 
+
+{% block scripts %}
+<script src="{% static 'js/pages/signup.js' %}"></script>
+{% endblock scripts %}
+
+<div class="load-users-page">
+    <div class="load-users__bg-image">
+        <img src="{% static 'images/bg_login.jpg' %}" alt="">
+    </div>
+    <div class="load-users">
+        <h3 class="load-users__header">Registrar usuarios</h3>
+        <form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <input type="submit" value="Registrar">
+        </form>
+        <form method="post" enctype="multipart/form-data" action={% url 'signup-multiple' %}>
+            {% csrf_token %}
+            <input type="file" name="file" id="id_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            <input type="submit" value="Añadir">
+        </form>
+    </div>
+    
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message{% if message.tags %} message__{{ message.tags }}{% endif %}">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+{% endcomment %}

@@ -1,5 +1,7 @@
 @forward './pages/login';
 @forward './pages/signup';
+@forward './pages/activate';
+@forward './pages/load_users';
 @forward './pages/home';
 @forward './pages/chat';
 @forward './pages/publication';
@@ -66,20 +68,37 @@ img {
 }
 
 .messages {
-    position: absolute;
-    top: 1rem;
+    position: fixed;
+    top: 1.25rem;
     left: 1rem;
     right: 1rem;
-    .message {
-        width: fit-content;
-        margin: auto;
+    max-width: 600px;
+    margin: auto;
+    .message__bg {
         background-color: v.$white;
-        padding: 0.75rem 1rem;
-        border: 1px solid rgba(v.$black, 0.5);
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: v.$primary-color;
-        border-radius: 2px;
-        margin-bottom: 4px;
+        border-radius: 4px;
     }
+    .message {
+        padding: 0.75rem;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-radius: 4px;
+        img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+    .message__success {
+        border: 1px solid rgba(v.$info-color, 0.5);
+        background-color: rgba(v.$info-color, 0.1);
+        color: v.$info-color-2;
+    }
+    .message__error {
+        border: 1px solid rgba(v.$danger-color, 0.25);
+        background-color: rgba(v.$danger-color, 0.1);
+        color: v.$danger-color;
+    }
+    
 }

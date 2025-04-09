@@ -23,7 +23,7 @@
     .main-publication {
         
         display: grid;
-        padding: 1rem;
+        padding: 2rem 1.25rem;
         gap: 0.75rem;
         $size_author_pic: 3rem;
         grid-template-columns: $size_author_pic minmax(0, 1fr);
@@ -158,6 +158,12 @@
 }
 
 .comments {
+    .publication-create__input-content {
+        textarea {
+
+            height: 3rem;
+        }
+    }
     .comments__p {
         padding: 0.5rem;
         font-size: 0.75rem;
@@ -167,161 +173,3 @@
         
     }
 }
-
-/*
-#id_publication_page {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-
-    @include r.md {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-#id_publication_section {
-    min-height: 100vh;
-    width: 100%;
-    background-color: v.$white;
-
-    h3 {
-        font-weight: 700;
-        padding: 0.75rem;
-        font-size: 0.875rem;
-        border-bottom: 1px solid rgba(v.$black, 0.75);
-        color: rgba(v.$black, 0.9);
-    }
-
-    h4 {
-        font-weight: 700;
-        padding: 0.75rem;
-        font-size: 0.75rem;
-        border-bottom: 1px solid rgba(v.$black, 0.5);
-        color: rgba(v.$black, 0.9);
-    }
-
-    .publication {
-        display: flex;
-        padding: 1rem;
-        border-bottom: 1px solid rgba(v.$black, 0.5);
-        gap: 0.5rem;
-        .publication-author-pic {
-            display: flex;
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            img {
-                object-fit: cover;
-                width: 100%;
-            }
-        }
-        .publication-body {
-            flex: 1;
-            .publication-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 4px;
-                .publication-author {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.25rem;
-                    text-decoration: none;
-                    .publication-author-name {
-                        font-size: 0.75rem;
-                        font-weight: 700;
-                    }
-                    .publication-author-username {
-                        font-size: 0.6875rem;
-                        font-weight: 600;
-                        color: rgba(v.$black, 0.75);
-                    }
-                }
-                .publication-created {
-                    font-size: 0.75rem;
-                    font-weight: 500;
-                    color: rgba(v.$black, 0.75);
-                }
-            }
-            .publication-img {
-                cursor: pointer;
-                border-radius: 4px;
-                overflow: hidden;
-                margin-bottom: 4px;
-                display: flex;
-                max-height: 480px;
-                min-height: 300px;
-                img {
-                    object-fit: cover;
-                    width: 100%;
-                }
-            }
-            .publication-text {
-                font-size: 0.75rem;
-                font-weight: 500;
-                margin-bottom: 4px;
-            }
-            .publication-category {
-                font-size: 0.6875rem;
-                font-weight: 700;
-                color: rgba(v.$black, 0.75);
-                margin-bottom: 4px;
-            }
-            .publication-footer {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                margin-top: 0.75rem;
-                
-                .btn-like, .btn-comment {
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    border: none;
-                    background-color: transparent;
-                    gap: 0.25rem;
-                    padding: 0;
-                    font-size: 0.6875rem;
-                    font-weight: 700;
-                    text-decoration: none;
-                    img {
-                        width: 1.25rem;
-                        height: 1.25rem;
-                    }
-               
-                }
-            }
-            .btn-delete-publication {
-                cursor: pointer;
-                border: none;
-                background-color: transparent;
-                font-size: 0.6875rem;
-                font-weight: 700;
-                color: rgba(v.$danger-color, 0.8);
-                padding: 0;
-            }
-            .sub-publication {
-                display: flex;
-                padding: 0.75rem;
-                border: 1px solid rgba(v.$black, 0.3);
-                border-radius: 4px;
-                gap: 0.5rem;
-                text-decoration: none;
-                margin-top: 6px;
-                .sub-publication-author-pic {
-                    display: flex;
-                    width: 2rem;
-                    height: 2rem;
-                    border-radius: 1rem;
-                    overflow: hidden;
-                    img {
-                        object-fit: cover;
-                        width: 100%;
-                    }
-                }
-            }
-        }
-    }
-}
-*/

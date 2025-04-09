@@ -77,17 +77,18 @@
             .publication__menu {
                 border: 1px solid rgba(v.$black, 0.75);
                 position: absolute;
-                right: 0;
-                top: 1rem;
+                right: 1.5rem;
+                top: 0;
                 background-color:v.$white;
                 .publication__btn-delete {
                     padding: 0.5rem;
                     cursor: pointer;
                     background-color: transparent;
                     border: none;
-                    font-size: 0.6875rem;
+                    font-size: 0.6125rem;
                     font-weight: 500;
                     color: rgba(v.$black, 0.9);
+                    background-color: rgba(v.$black, 0.05);
                     &:hover {
                         color: v.$danger-color;
                     }
@@ -101,6 +102,7 @@
 
         
         .publication__content {
+            margin-bottom: 0.25rem;
             .publication__text {
                 font-size: 0.75rem;
                 line-height: 1rem;
@@ -124,11 +126,11 @@
         .publication__footer {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.25rem;
 
 
             .publication__button {
-                $size_icon: 16px;
+                $size_icon: 14px;
                 cursor: pointer;
                 display: grid;
                 gap: 0.25rem;
@@ -136,10 +138,11 @@
                 align-items: center;
                 text-decoration: none;
                 font-size: 0.75rem;
-                font-weight: 600;
+                font-weight: 500;
                 margin-top: 0.5rem;
                 
                 img {
+                    display: flex;
                     width: $size_icon;
                     height: $size_icon;   
                 }
@@ -241,238 +244,3 @@
         }
     }
 }
-
-
-/*
-\
-\
-        .publication__header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            margin-bottom: 0.25rem;
-            .publication__author {
-                display: flex;
-                align-items: center;
-                text-decoration: none;
-                gap: 0.25rem;
-                min-width: 0;
-
-                .publication__author-name {
-                    font-size: 0.75rem;
-                    font-weight: 700;
-                    text-wrap: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
-                .publication__author-username {
-                    font-size: 0.6875rem;
-                    font-weight: 600;
-                    color: rgba(v.$black, 0.75);
-                    text-wrap: nowrap;
-                }
-                .publication__created {
-                    font-size: 0.6875rem;
-                    font-weight: 500;
-                    color: rgba(v.$black, 0.75);
-                    text-wrap: nowrap;
-                }
-            }
-            .publication__btn-menu {
-                background-color: transparent;
-                border: none;
-                cursor: pointer;
-            }
-            .publication__menu {
-                border: 1px solid rgba(v.$black, 0.25);
-                position: absolute;
-                right: 0;
-                top: 1.25rem;
-                background-color:rgba(v.$black, 0.05);
-                .publication__btn-delete {
-                    padding: 0.4rem;
-                    cursor: pointer;
-                    background-color: transparent;
-                    border: none;
-                    font-size: 0.6875rem;
-                    font-weight: 500;
-                    color: rgba(v.$black, 0.9);
-                    &:hover {
-                        color: v.$danger-color;
-                    }
-                }
-                #id_form_publication_delete {
-                    display: flex;
-                }
-            }
-        }
-
-
-#id_publications {
-    .publication {
-        display: flex;
-        padding: 1rem;
-        border-bottom: 1px solid rgba(v.$black, 0.15);
-        gap: 0.5rem;
-        .publication-author-pic {
-            display: flex;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            img {
-                object-fit: cover;
-                width: 100%;
-            }
-        }
-        .publication-body {
-            flex: 1;
-            .publication-header {
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                gap: 1rem;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 8px;
-                .publication-author {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.25rem;
-                    text-decoration: none;
-                    overflow: hidden;
-
-                    .publication-author-name {
-                        overflow: hidden;
-                        text-wrap: nowrap;
-                        text-overflow: ellipsis;
-                        font-size: 0.75rem;
-                        font-weight: 700;
-                    }
-                    .publication-author-username {
-                        font-size: 0.6875rem;
-                        font-weight: 600;
-                        color: rgba(v.$black, 0.75);
-                    }
-                }
-                .publication-created {
-                    overflow: hidden;
-                    text-wrap: nowrap;
-                    text-overflow: ellipsis;
-                    font-size: 0.75rem;
-                    font-weight: 500;
-                    color: rgba(v.$black, 0.75);
-                    text-align: end;
-                }
-            }
-            .publication-img {
-                cursor: pointer;
-                border-radius: 4px;
-                overflow: hidden;
-                margin-bottom: 4px;
-                display: flex;
-                max-height: 480px;
-                min-height: 300px;
-                img {
-                    object-fit: cover;
-                    width: 100%;
-                }
-            }
-            .publication-text {
-                font-size: 0.75rem;
-                font-weight: 500;
-                margin-bottom: 4px;
-                line-height: 1rem;
-            }
-            .publication-category {
-                font-size: 0.6875rem;
-                font-weight: 700;
-                margin-top: 0.75rem;
-                color: rgba(v.$black, 0.75);
-            }
-            .publication-footer {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-top: 0.75rem;
-                
-                .btn-like, .btn-comment {
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    border: none;
-                    background-color: transparent;
-                    gap: 0.25rem;
-                    padding: 0;
-                    font-size: 0.6875rem;
-                    font-weight: 700;
-                    text-decoration: none;
-                    img {
-                        width: 1rem;
-                        height: 1rem;
-                    }
-               
-                }
-            }
-        }
-        .btn-delete-publication {
-            cursor: pointer;
-            border: none;
-            background-color: transparent;
-            font-size: 0.6875rem;
-            font-weight: 700;
-            color: rgba(v.$danger-color, 0.8);
-            padding: 0;
-            text-decoration: underline;
-        }
-        .sub-publication {
-            display: flex;
-            padding: 0.75rem;
-            border: 1px solid rgba(v.$black, 0.3);
-            border-radius: 4px;
-            gap: 0.5rem;
-            text-decoration: none;
-            margin-top: 6px;
-            .sub-publication-author-pic {
-                display: flex;
-                width: 2rem;
-                height: 2rem;
-                border-radius: 1rem;
-                overflow: hidden;
-                img {
-                    object-fit: cover;
-                    width: 100%;
-                }
-            }
-        }
-    }
-
-    #id_btn_get_publications {
-        border-radius: 4px;
-        background-color: v.$info-color;
-        color: v.$white;
-        font-weight: 600;
-        font-size: 0.75rem;
-        margin: auto;
-        margin-top: 1rem;
-        border: none;
-        padding: 0.5rem;
-        display: block;
-        margin-bottom: 2rem;
-    }
-
-}
-.for-empty {
-    padding: 2rem;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-decoration: underline;
-
-    background-color: rgba(v.$black, 0.05);
-    border: 1px solid rgba(v.$black, 0.1);
-    
-    border-radius: 4px;
-    margin: 0.5rem;
-}
-*/

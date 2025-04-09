@@ -21,6 +21,12 @@
                     <img src="{% static 'images/message_icon.png' %}" alt="">
                     Mensajes
                 </a>
+                {% if user.is_staff %}
+                <a href="{% url 'signup' %}" class="navbar__link">
+                    <img src="{% static 'images/add_user.png' %}" alt="">
+                    Registrar usuarios
+                </a>
+                {% endif %}
                 <a href="{% url "logout" %}" class="navbar__link">
                     <img src="{% static 'images/logout.png' %}" alt="">
                     Cerrar sesión

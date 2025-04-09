@@ -1,0 +1,63 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %}Iniciar Sesión{% endblock title %}
+
+{% block content %}
+
+<div class="login-page">
+    <div class="login">
+        <div class="login-header">
+            <div class="login-header__logo">
+                <img src="{% static 'images/logo.png' %}" alt="universe">
+            </div>
+            <h1>Bienvenido a <span>UNIVERSE</span></h1>
+        </div>
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            <p class="login-form__header">Iniciar sesión</p>
+            <div class="login-form__field">
+                <div class="login-form__icon">
+                    <img src="{% static 'images/user_icon.png' %}" alt="">
+                </div>
+                {{ form.username }}
+            </div>
+            <div class="login-form__field">
+                <div class="login-form__icon">
+                    <img src="{% static 'images/password_icon.png' %}" alt="">
+                </div>
+                {{ form.password }}
+            </div>
+            
+            {% for error in form.non_field_errors %}
+                <p class="login-form__text-error">{{ error }}</p>
+            {% endfor %}
+            <button type="submit" class="login-form__button">Ingresar</button>
+            <p class="login-form__activate">O, si aún no lo has hecho, <a href="{% url "activate" %}">activa tu cuenta</a>.</p>
+        </form>
+    </div>
+    <div class="login__bg-image">
+        <img src="{% static 'images/bg_login.jpg' %}" alt="">
+    </div>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message__bg">
+            <div class="message {% if message.tags %} message__{{ message.tags }}{% endif %}">
+                {% if message.tags == 'error' %}
+                    <img src="{% static 'images/danger_icon.png' %}" alt="">
+                    <p><b>Error: </b>{{ message }}</p>
+                {% elif message.tags == 'success' %}
+                    <img src="{% static 'images/info_icon.png' %}" alt="">
+                    <p>{{ message }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
